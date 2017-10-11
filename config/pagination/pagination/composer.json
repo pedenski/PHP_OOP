@@ -1,0 +1,17 @@
+{
+    "name": "modularr/flexible-php-pagination",
+    "type": "library",
+    "description": "The Flexible PHP pagination class was designed to be the easiest to use PHP Pagination system without losing any customization options.",
+    "keywords": ["php","pagination"],
+    "homepage": "http://modularr.com",
+    "license": "UNLICENSE",
+    "autoload": {
+        "classmap": ["pagination.php"]
+    },
+    "authors": [
+        {
+            "name": "Blaxus",
+            "email": "admin@daviddhont.com"
+        }
+    ]
+}

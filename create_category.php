@@ -3,12 +3,12 @@
 include_once 'config/database.php';
 include_once 'config/product_class.php';
 include_once 'config/category_class.php';
- 
+
 // get database connection
 $db = new database();
 
 $category = new category($db->getConn());
-
+$category = $category->read();
 
 
 //set headers

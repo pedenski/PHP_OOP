@@ -3,6 +3,7 @@
 include_once 'config/database.php';
 include_once 'config/product_class.php';
 include_once 'config/category_class.php';
+include_once 'config/pagination_class.php'; 
 
 // get database connection
 $db = new database();
@@ -10,25 +11,37 @@ $db = new database();
 $product = new product($db->getConn());
 $category = new category($db->getConn());
 
-//page title
-$page_title = "Read Products";
 
-//pagination
+
+
+//set pagination
+$max = 5;
+$maxNum = 5;
+//get total result 
+$countRow = $product->countRows();
+$total = $countRow->rowCount();
+//if isset then set to page else its page 1
 $page = isset($_GET['page']) ? $_GET['page'] : 1;
-$records_per_page = 3;
-//3 * 1 = 3 - 3  = 0
-//3 * 2 = 6 - 3  = 3
-//3 * 3 = 9 - 3  = 6
-$record_num = ($records_per_page * $page) - $records_per_page;
+//get pagination
+$pagination = new Pagination($max, $total, $page, $maxNum);
+
+
+//page title and headers
+$page_title = "Read Products";
+include_once('header.php');
 ?>
 
-<?php include_once('header.php'); ?>
+
 <div class='right-button-margin'>
 		<a href='create_product.php' class='btn btn-default pull-right'>Create Product</a>
 </div>
 
 
 <?php
+//how many to display
+$records_per_page = 5;
+$record_num = ($records_per_page * $page) - $records_per_page;
+//get product records limit = records_per_page
 $sql = $product->readAll($record_num, $records_per_page);
 $num = $sql->rowCount();
 if($num > 0) { ?>
@@ -61,14 +74,22 @@ foreach($row as $row){
 		//insert id inside category class as public $id
 		$category->id = $catid;
 		//execute class and get sql
-		$catid = $category->translateCatID();
+		$category->translateCatID();
 		//fetch the data as array from translateCatID()
-		$catid = $catid->fetch(PDO::FETCH_ASSOC);
-		//echo as Assoc Array
-		echo $catid['name'];
+		echo $category->name;
 		?>
 		</td>
-		<td>Buttons</td>
+		<td>
+			<a href='read_one.php?id=<?php echo $id;?>' class='btn btn-primary left-margin'>
+	     	<span class='glyphicon glyphicon-list'></span> Read
+	 		</a> 
+	 		<a href='update_product.php?id=<?php echo $id;?>' class='btn btn-info left-margin'>
+	   		<span class='glyphicon glyphicon-edit'></span> Edit
+			</a>
+			<a delete-id='<?php echo $id;?>' class='btn btn-danger delete-object'>
+			<span class='glyphicon glyphicon-remove'></span> Delete
+			</a>
+		</td>
 	</tr>
 
 	
@@ -81,12 +102,37 @@ foreach($row as $row){
 	<div class='alert alert-info'>No products found.</div>
 <?php } ?>
 
+<!-- PAGINATION -->
+
+
+<style>
+.pagination {
+	padding:10px;
+	
+}
+
+.pagination a, b{
+	background:#c0c0c0;
+	padding:5px;
+	border: 1px solid #000;
+	margin-right:3px;
+}
+</style>
+
+<div class="pagination">
+<?php 
+
+
+echo $pagination->previous(' <a href="index.php?page={nr}">Previous</a>  ');
+echo $pagination->numbers(' <a href="index.php?page={nr}">{nr}</a>  ', ' <b>{nr}</b>  ');
+echo $pagination->next(' <a href="index.php?page={nr}">Next</a>  ');
 
 
 
 
 
-
+?>
+</div>
 
 
 
