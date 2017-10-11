@@ -29,9 +29,9 @@ class category {
 			$sql = $this->conn->prepare($query);
 			$sql->bindParam(1, $this->id);
 			$sql->execute();
-			return $sql;
-			exit();
+			
 			$row = $sql->fetch(PDO::FETCH_ASSOC);
+			$this->name = $row['name'];
 
 		}
 

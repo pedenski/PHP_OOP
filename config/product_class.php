@@ -70,6 +70,7 @@ class product {
 		return $sql;
 	}
 
+	//get single product details
 	public function readProduct(){
 		
 		$query = "SELECT name, price, description, category_id FROM ".$this->table_name." WHERE id = ? LIMIT 0,1";
@@ -83,13 +84,35 @@ class product {
 		$this->price = $row['price'];
 		$this->description = $row['description'];
 		$this->category_id = $row['category_id'];
+	}
 
+	//update product details
+	public function update($var) {
+		$query = "UPDATE ".$this->table_name."
+				SET
+				name = :name,
+				price = :price,
+				description = :description,
+				category_id = :category_id,
+				modified = :modified
+				WHERE 
+				id = :id";
 
+		$this->timestamp = date('Y-m-d H:i:s');
+		$sql = $this->conn->prepare($query);
+
+		foreach($var as $Name => &$Value) {
+				$sql->bindParam(':'.$Name, $Value);
+		}
+		$sql->bindParam(":id", $this->id);
+
+	
+		$sql->bindParam(":modified", $this->timestamp);
+		$bool = true;
+		return ($bool) ? $sql->execute() : false;
 
 
 	}
-
-
 
 }
 

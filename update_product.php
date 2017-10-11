@@ -27,6 +27,37 @@ include_once('header.php');
 ?>
 
 
+<?php
+
+if($_POST) {
+	
+
+
+	// update the product
+    if($product->update($_POST)){
+        echo "<div class='alert alert-success alert-dismissable'>";
+            echo "Product was updated.";
+        echo "</div>";
+    }
+ 
+    // if unable to update the product, tell the user
+    else{
+        echo "<div class='alert alert-danger alert-dismissable'>";
+            echo "Unable to update product.";
+        echo "</div>";
+    }
+
+
+
+
+}
+
+
+
+
+
+?>
+
 
 
 <div class='right-button-margin'>
@@ -56,18 +87,21 @@ include_once('header.php');
             <td>
 	        <select class='form-control' name='category_id'>
 	           	<?php 
+	           	$selected = $product->category_id;
+
 	     		$sql = $category->read()->fetchALL(PDO::FETCH_ASSOC);
 	            foreach($sql as $row) {
-	           	$catid = $row['id'];
-	           	$catname = $row['name'];
+		           	$catid = $row['id'];
+		           	$catname = $row['name'];
 
-	           	//select the option same as cat id as default
-	           	if($product->category_id == $catid) { ?>
-	           	<option value="<?php echo $product->category_id?>" selected='selected'>hahahaha</option>
-	           	<?php } else { ?>
-	   		  	<option value="<?php echo $catid ?>"><?php echo $catname; ?></option>
-				<?php }	//endif?>
-	            <?php } //endforeach?>
+		           	//current category of the product must be selected by default
+		            if($selected == $catid){
+			           echo "<option value='$catid' selected=selected>".$catname."</option>";
+		            } else {
+		            	echo "<option value='$catid'>".$catname."</option>";
+		            }
+	     		}
+	     		?>
             </select>
             </td>
         </tr>
