@@ -11,7 +11,7 @@ class product {
 	public $description;
 	public $category_id;
 	public $created;
-	
+
 
 	public function __construct($db) {
 		$this->conn = $db;
@@ -47,7 +47,7 @@ class product {
 	//Get data to DB returns 5 items
 	public function readALL($record_num, $records_per_page) {
 		$query = "SELECT * FROM ".$this->table_name."
-			      ORDER BY name ASC LIMIT ".$record_num.",".$records_per_page;
+			      LIMIT ".$record_num.",".$records_per_page;
 		$sql = $this->conn->prepare($query);
 		$sql->execute();
 		return $sql;
@@ -110,8 +110,20 @@ class product {
 		$sql->bindParam(":modified", $this->timestamp);
 		$bool = true;
 		return ($bool) ? $sql->execute() : false;
+	}
 
-
+	//delete product item
+	public function deleteProduct() {
+		$query = "UPDATE ".$this->table_name."
+			SET
+			is_hidden = 1
+			WHERE id = :id";
+		$sql = $this->conn->prepare($query);
+		$sql->bindParam(":id", $this->id);	
+		$sql->execute();
+		$bool = true;
+		//return ($bool) ? $sql->execute() : false;
+		return true ? $sql->execute() : false;
 	}
 
 }

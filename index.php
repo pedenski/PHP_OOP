@@ -41,7 +41,7 @@ include_once('header.php');
 
 <?php
 //how many to display
-$records_per_page = 5;
+$records_per_page = 4;
 $record_num = ($records_per_page * $page) - $records_per_page;
 //get product records limit = records_per_page
 $sql = $product->readAll($record_num, $records_per_page);
@@ -66,6 +66,9 @@ foreach($row as $row){
 	$catid 	 = $row['category_id'];
 	$created = $row['created'];
 	$edited  = $row['modified'];
+ 	$is_hidden = $row['is_hidden'];
+
+ 	if(empty($is_hidden)) {
 ?>
 	<tr>
 		<td><?php echo $name; ?></td>
@@ -95,7 +98,7 @@ foreach($row as $row){
 	</tr>
 
 	
-<?php } //endforeach?>
+<?php 	}/*endif hidden*/ } //endforeach?>
 </table>
 
 
