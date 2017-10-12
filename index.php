@@ -1,4 +1,6 @@
 <?php 
+$page = isset($_GET['page']) ? $_GET['page'] : 1;
+
 // include database and object files
 include_once 'config/database.php';
 include_once 'config/product_class.php';
@@ -21,7 +23,7 @@ $maxNum = 5;
 $countRow = $product->countRows();
 $total = $countRow->rowCount();
 //if isset then set to page else its page 1
-$page = isset($_GET['page']) ? $_GET['page'] : 1;
+
 //get pagination
 $pagination = new Pagination($max, $total, $page, $maxNum);
 
@@ -80,7 +82,7 @@ foreach($row as $row){
 		?>
 		</td>
 		<td>
-			<a href='read_one.php?id=<?php echo $id;?>' class='btn btn-primary left-margin'>
+			<a href='read_product.php?id=<?php echo $id;?>' class='btn btn-primary left-margin'>
 	     	<span class='glyphicon glyphicon-list'></span> Read
 	 		</a> 
 	 		<a href='update_product.php?id=<?php echo $id;?>' class='btn btn-info left-margin'>

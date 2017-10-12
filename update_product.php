@@ -1,4 +1,7 @@
 <?php
+//get id
+$id = isset($_GET['id']) ? $_GET['id'] : die('Error: Missing ID');
+
 // include database and object files
 include_once 'config/database.php';
 include_once 'config/product_class.php';
@@ -10,8 +13,6 @@ $db = new database();
 $product = new product($db->getConn());
 $category = new category($db->getConn());
 
-//get id
-$id = isset($_GET['id']) ? $_GET['id'] : die('Error: Missing ID');
 //set to product class
 $product->id = $id;
 $category->id = $id;
