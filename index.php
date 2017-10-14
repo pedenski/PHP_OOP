@@ -17,7 +17,7 @@ $category = new category($db->getConn());
 
 
 //set pagination
-$max = 5;
+$max = 3;
 $maxNum = 5;
 //get total result 
 $countRow = $product->countRows();
@@ -25,7 +25,9 @@ $total = $countRow->rowCount();
 //if isset then set to page else its page 1
 
 //get pagination
-$pagination = new Pagination($max, $total, $page, $maxNum);
+$nav = new Pagination($max, $total, $page, $maxNum);
+$start = $nav->start();
+
 
 
 //page title and headers
@@ -40,13 +42,8 @@ include_once('header.php');
 
 
 <?php
-//how many to display
-$records_per_page = 4;
-$record_num = ($records_per_page * $page) - $records_per_page;
-//get product records limit = records_per_page
-$sql = $product->readAll($record_num, $records_per_page);
-$num = $sql->rowCount();
-if($num > 0) { ?>
+$sql = $product->readAll($start,$max);
+?>
 <table class='table table-hover table-responsive table-bordered'>
 	<tr>
 		<th>Product</th>
@@ -66,10 +63,7 @@ foreach($row as $row){
 	$catid 	 = $row['category_id'];
 	$created = $row['created'];
 	$edited  = $row['modified'];
- 	$is_hidden = $row['is_hidden'];
-
- 	if(empty($is_hidden)) {
-?>
+ ?>
 	<tr>
 		<td><?php echo $name; ?></td>
 		<td><?php echo $price; ?> </td>
@@ -98,14 +92,11 @@ foreach($row as $row){
 	</tr>
 
 	
-<?php 	}/*endif hidden*/ } //endforeach?>
+<?php  } //endforeach?>
 </table>
 
 
 
-<?php } else { ?>
-	<div class='alert alert-info'>No products found.</div>
-<?php } ?>
 
 <!-- PAGINATION -->
 
@@ -128,9 +119,9 @@ foreach($row as $row){
 <?php 
 
 
-echo $pagination->previous(' <a href="index.php?page={nr}">Previous</a>  ');
-echo $pagination->numbers(' <a href="index.php?page={nr}">{nr}</a>  ', ' <b>{nr}</b>  ');
-echo $pagination->next(' <a href="index.php?page={nr}">Next</a>  ');
+echo $nav->previous(' <a href="index.php?page={nr}">Previous</a>  ');
+echo $nav->numbers(' <a href="index.php?page={nr}">{nr}</a>  ', ' <b>{nr}</b>  ');
+echo $nav->next(' <a href="index.php?page={nr}">Next</a>  ');
 
 
 

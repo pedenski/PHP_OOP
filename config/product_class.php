@@ -1,4 +1,5 @@
 <?php
+
 class product {
 	//db connection
 	private $conn;
@@ -11,6 +12,7 @@ class product {
 	public $description;
 	public $category_id;
 	public $created;
+
 
 
 	public function __construct($db) {
@@ -45,13 +47,22 @@ class product {
 	}
 
 	//Get data to DB returns 5 items
+	public function readALL($start, $max) {
+		$query = "SELECT * FROM ".$this->table_name." WHERE is_hidden = 0 LIMIT ".$start.",".$max;
+		$sql = $this->conn->prepare($query);
+		$sql->execute();
+		return $sql;
+	}
+
+
+	/*Get data to DB returns 5 items
 	public function readALL($record_num, $records_per_page) {
 		$query = "SELECT * FROM ".$this->table_name."
 			      LIMIT ".$record_num.",".$records_per_page;
 		$sql = $this->conn->prepare($query);
 		$sql->execute();
 		return $sql;
-	}
+	}*/
 
 	//Count number of rows for pagination
 	public function countRows(){
