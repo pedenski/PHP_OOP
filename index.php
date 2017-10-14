@@ -28,8 +28,6 @@ $total = $countRow->rowCount();
 $nav = new Pagination($max, $total, $page, $maxNum);
 $start = $nav->start();
 
-
-
 //page title and headers
 $page_title = "Read Products";
 include_once('header.php');
@@ -41,9 +39,7 @@ include_once('header.php');
 </div>
 
 
-<?php
-$sql = $product->readAll($start,$max);
-?>
+<?php $sql = $product->readAll($start,$max); ?>
 <table class='table table-hover table-responsive table-bordered'>
 	<tr>
 		<th>Product</th>
@@ -91,7 +87,6 @@ foreach($row as $row){
 		</td>
 	</tr>
 
-	
 <?php  } //endforeach?>
 </table>
 
